@@ -31,7 +31,7 @@ if (isset($_POST["username"]) and isset($_POST["password"]))
 		exit();
 	}
 
-	$sql="SELECT ID, Password FROM wm2014_users WHERE Username='$user';";
+	$sql="SELECT ID, Password FROM competition_users WHERE Username='$user';";
 	$result = mysqli_query($mySql, $sql);
 	if (!$result) {
 	  die('Error: ' . mysqli_error($mySql));

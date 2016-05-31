@@ -37,20 +37,20 @@ $user = mysqli_real_escape_string($mySql, $_POST["username"]);
 
 // check if user exists
 
-$sql="SELECT COUNT(*) FROM wm2014_users WHERE Username LIKE '".$user."';";
+$sql="SELECT COUNT(*) FROM competition_users WHERE Username LIKE '".$user."';";
 if (mysqli_fetch_row(mysqli_query($mySql, $sql))[0] > 0) {
 	// user already exists
 	header("Location: ../index.php?error=reg_user_exists");
 	exit;
 }
 
-$sql="INSERT INTO wm2014_users (EMail, Password, Username) VALUES ('$mail', '$pwd', '$user')";
+$sql="INSERT INTO competition_users (EMail, Password, Username) VALUES ('$mail', '$pwd', '$user')";
 if (! mysqli_query($mySql, $sql)) {
   die('Error: ' . mysqli_error($mySql));
   session_destroy();
 }
 
-$sql="SELECT ID FROM wm2014_users WHERE Username LIKE '$user';";
+$sql="SELECT ID FROM competition_users WHERE Username LIKE '$user';";
 $result = mysqli_query($mySql, $sql);
 if (!$result) {
   die('Error: ' . mysqli_error($mySql));
