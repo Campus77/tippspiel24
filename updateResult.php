@@ -58,12 +58,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 
 				t1.FullName AS TEAM1, t2.FullName AS TEAM2,
 				r.RESULT1, r.RESULT2
-				FROM wm2014_plan p
-				LEFT JOIN wm2014_results r
+				FROM competition_plan p
+				LEFT JOIN competition_results r
 				ON r.ID = p.RESULT
-				LEFT JOIN wm2014_teams t1
+				LEFT JOIN competition_teams t1
 				ON r.TEAM1 = t1.ID
-				LEFT JOIN wm2014_teams t2
+				LEFT JOIN competition_teams t2
 				ON r.TEAM2 = t2.ID
 				ORDER BY p.Anpfiff, p.RESULT ASC;";
 
@@ -95,6 +95,6 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	
 //		echo $end - $start;
 
-//	$sql = "UPDATE wm2014_results SET RESULT1=$r1, RESULT2=$r2 WHERE ID=$gid;";
+//	$sql = "UPDATE competition_results SET RESULT1=$r1, RESULT2=$r2 WHERE ID=$gid;";
 //	mysqli_query($mySql, $sql);
 ?>

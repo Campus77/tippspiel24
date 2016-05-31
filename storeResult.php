@@ -58,7 +58,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			$r1 = $_POST['r1_'.$idx];
 			$r2 = $_POST['r2_'.$idx];
 			$gid = $value;
-			$sql = "UPDATE wm2014_results SET RESULT1=$r1, RESULT2=$r2 WHERE ID=$gid";
+			$sql = "UPDATE competition_results SET RESULT1=$r1, RESULT2=$r2 WHERE ID=$gid";
 			mysqli_query($mySql, $sql);
 		}
 	}
@@ -66,12 +66,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	$sql = "SELECT p.RESULT, p.Anpfiff AS KICKOFF, p.Ort AS ORT,
 			t1.FullName AS TEAM1, t2.FullName AS TEAM2,
 			r.RESULT1, r.RESULT2
-			FROM wm2014_plan p
-			LEFT JOIN wm2014_results r
+			FROM competition_plan p
+			LEFT JOIN competition_results r
 			ON r.ID = p.RESULT
-			LEFT JOIN wm2014_teams t1
+			LEFT JOIN competition_teams t1
 			ON r.TEAM1 = t1.ID
-			LEFT JOIN wm2014_teams t2
+			LEFT JOIN competition_teams t2
 			ON r.TEAM2 = t2.ID
 			/*WHERE p.Anpfiff < NOW()*/
 			ORDER BY p.Anpfiff, p.RESULT ASC;";
@@ -102,7 +102,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	echo "</table><input type=\"submit\" value=\"speichern\"></form>";
 	
-	$sql = "SELECT ID, FullName FROM wm2014_teams;";
+	$sql = "SELECT ID, FullName FROM competition_teams;";
 	$result = mysqli_query($mySql, $sql);
 	echo "<table>";
 	while ($row = mysqli_fetch_assoc($result)) {
@@ -113,7 +113,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	echo "</table>";
 	
-//	mysqli_query($mySql, "UPDATE wm2014_results SET TEAM2 = 32 WHERE ID = 57");
+//	mysqli_query($mySql, "UPDATE competition_results SET TEAM2 = 32 WHERE ID = 57");
 
 ?>
 </body>

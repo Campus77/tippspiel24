@@ -34,11 +34,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		$uid = $_SESSION['activeUserId'];
 
 		// check timestamp
-		$allowed = mysqli_fetch_row(mysqli_query($mySql, "SELECT Anpfiff > NOW() AS allowed FROM wm2014_plan WHERE RESULT = $gid"))[0];
+		$allowed = mysqli_fetch_row(mysqli_query($mySql, "SELECT Anpfiff > NOW() AS allowed FROM competition_plan WHERE RESULT = $gid"))[0];
 		if (!$allowed) exit;
 		
 		// remove old bet
-		$sql = "DELETE FROM wm2014_bets WHERE USER_ID=$uid AND RESULT_ID=$gid;";
+		$sql = "DELETE FROM competition_bets WHERE USER_ID=$uid AND RESULT_ID=$gid;";
 
 		$result = mysqli_query($mySql, $sql);
 		if (!$result) {
@@ -46,7 +46,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		
 		// add new bet
-		$sql = "INSERT INTO wm2014_bets (USER_ID, RESULT_ID, BET1, BET2) VALUES ($uid, $gid, $b1, $b2);";
+		$sql = "INSERT INTO competition_bets (USER_ID, RESULT_ID, BET1, BET2) VALUES ($uid, $gid, $b1, $b2);";
 		$result = mysqli_query($mySql, $sql);
 		if (!$result) {
 		  die('Error: ' . mysqli_error($mySql));

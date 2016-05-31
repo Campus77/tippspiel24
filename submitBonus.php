@@ -30,7 +30,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		}
 
 		// get questions
-		$sql = "SELECT ID, QUESTION, TYPE FROM wm2014_bonus ORDER BY wm2014_bonus.ID ASC;";
+		$sql = "SELECT ID, QUESTION, TYPE FROM competition_bonus ORDER BY competition_bonus.ID ASC;";
 		$result = mysqli_query($mySql, $sql);
 		if (!$result) {
 		  die('Error: ' . mysqli_error($mySql));
@@ -41,11 +41,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			global $uid, $mySql;
 			
 			// check timestamp
-			$allowed = mysqli_fetch_row(mysqli_query($mySql, "SELECT BET_LIMIT > NOW() AS allowed FROM wm2014_bonus WHERE ID = $bid"))[0];
+			$allowed = mysqli_fetch_row(mysqli_query($mySql, "SELECT BET_LIMIT > NOW() AS allowed FROM competition_bonus WHERE ID = $bid"))[0];
 			if (!$allowed) return;
 
 			// remove old bet
-			$sql = "DELETE FROM wm2014_bonus_bets WHERE USER_ID=$uid AND BONUS_ID=$bid;";
+			$sql = "DELETE FROM competition_bonus_bets WHERE USER_ID=$uid AND BONUS_ID=$bid;";
 
 			$result = mysqli_query($mySql, $sql);
 			if (!$result) {
@@ -53,7 +53,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			}
 			
 			// add new bet
-			$sql = "INSERT INTO wm2014_bonus_bets (USER_ID, BONUS_ID, BONUS_BET) VALUES ($uid, $bid, ".(is_null($res) ? "null" : "\"$res\"").");";
+			$sql = "INSERT INTO competition_bonus_bets (USER_ID, BONUS_ID, BONUS_BET) VALUES ($uid, $bid, ".(is_null($res) ? "null" : "\"$res\"").");";
 			$result = mysqli_query($mySql, $sql);
 			if (!$result) {
 			  die('Error: ' . mysqli_error($mySql));

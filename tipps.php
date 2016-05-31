@@ -20,11 +20,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	include ('functions.php');
 ?>
 <!DOCTYPE html>
-<html>
+<html land="de">
 	<head>
 		<meta name="author" content="Marcel Daneyko" />
-		<meta http-equiv="content-type" content="text/html; charset=iso-8859-15" />
-		<link href="css/wm2014.css" rel="stylesheet" type="text/css" />
+		<meta charset="iso-8859-15" />
+		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css' />
 		<link href='http://fonts.googleapis.com/css?family=Dosis:300' rel='stylesheet' type='text/css' />
 		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel="stylesheet" type="text/css" />
@@ -65,14 +65,14 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		$sql = "SELECT p.RESULT, DATE_FORMAT(p.Anpfiff, '%d.%m.%Y %H:%i') AS Anpfiff, (NOW() < p.Anpfiff) AS tippable, p.Ort,
 				t1.ShortName AS TSN1, t1.FullName AS TFN1, t1.Flag AS TFLG1, t2.ShortName AS TSN2, t2.FullName AS TFN2, t2.Flag AS TFLG2, b.BET1, b.BET2,
 				r.RESULT1, r.RESULT2
-				FROM wm2014_plan p
-				LEFT JOIN wm2014_results r
+				FROM competition_plan p
+				LEFT JOIN competition_results r
 				ON r.ID = p.RESULT
-				LEFT JOIN wm2014_teams t1
+				LEFT JOIN competition_teams t1
 				ON r.TEAM1 = t1.ID
-				LEFT JOIN wm2014_teams t2
+				LEFT JOIN competition_teams t2
 				ON r.TEAM2 = t2.ID
-				LEFT JOIN wm2014_bets b
+				LEFT JOIN competition_bets b
 				ON p.RESULT = b.RESULT_ID AND b.USER_ID = $uid
 				ORDER BY p.Anpfiff, p.RESULT ASC;";
 				

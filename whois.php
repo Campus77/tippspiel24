@@ -25,7 +25,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		
 		// remove old bet
-		$sql = "SELECT * FROM wm2014_users";
+		$sql = "SELECT * FROM competition_users";
 
 		$result = mysqli_query($mySql, $sql);
 		echo "<table>";

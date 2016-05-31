@@ -17,7 +17,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 <?php
 	class Navi
 	{
-		const PAGENAME = "WM2014";
+		const PAGENAME = "EM 2016";
 
 		static private $naviMap = Array(
 				"tipps"		=>	"Tippabgabe",
@@ -45,7 +45,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 				$out .= "<li id=\"elem\"><a href=\"$link.php\"><span id=\"elem\">$title</span></a></li>";
 
 			$out .= "</ul></nav></div><div id=\"title\">
-					<h1>".ucfirst($_SESSION["activeUser"])."'s WM 2014</h1>
+					<h1>".ucfirst($_SESSION["activeUser"])."'s EM 2016</h1>
 					<h2>".self::getPageTitle()."</h2>
 				</div>
 				<div style=\"clear:both\"></div>";

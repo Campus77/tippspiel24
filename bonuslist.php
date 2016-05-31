@@ -118,7 +118,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 
 	// get all flags
-	$query = "SELECT ShortName, Flag FROM wm2014_teams ORDER BY ShortName";
+	$query = "SELECT ShortName, Flag FROM competition_teams ORDER BY ShortName";
 	$res_flags = mysqli_query($mySql, $query);
 	$flags = array();
 	while ($rowFlags = mysqli_fetch_assoc($res_flags)) {
@@ -127,7 +127,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	echo "<script> var flags = ".json_encode($flags)."; </script>";
 	
 	// get all bonus questions
-	$query = "SELECT b.ID, b.QUESTION, b.TYPE, b.RESULT, b.BET_LIMIT, b.POINTS FROM wm2014_bonus b ORDER BY ID";
+	$query = "SELECT b.ID, b.QUESTION, b.TYPE, b.RESULT, b.BET_LIMIT, b.POINTS FROM competition_bonus b ORDER BY ID";
 	$res_bonus = mysqli_query($mySql, $query);
 	$bonus = array();
 	while ($rowBonus = mysqli_fetch_assoc($res_bonus)) {
@@ -139,8 +139,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 						'bets' => array()
 					);
 
-		$queryPerBet = "SELECT u.UserName, bb.BONUS_BET FROM wm2014_users u
-						LEFT JOIN wm2014_bonus_bets bb
+		$queryPerBet = "SELECT u.UserName, bb.BONUS_BET FROM competition_users u
+						LEFT JOIN competition_bonus_bets bb
 						ON u.ID = bb.USER_ID AND bb.BONUS_ID = $bid
 						ORDER BY LOWER(u.UserName) ASC";
 		$res_bonusBet = mysqli_query($mySql, $queryPerBet);

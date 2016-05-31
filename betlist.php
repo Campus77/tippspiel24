@@ -34,12 +34,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 					t1.ShortName AS TSN1, t1.FullName AS TFN1, t1.Flag AS TFLG1,
 					t2.ShortName AS TSN2, t2.FullName AS TFN2, t2.Flag AS TFLG2,
 					r.RESULT1, r.RESULT2
-					FROM wm2014_plan p
-					LEFT JOIN wm2014_results r
+					FROM competition_plan p
+					LEFT JOIN competition_results r
 					ON r.ID = p.RESULT
-					LEFT JOIN wm2014_teams t1
+					LEFT JOIN competition_teams t1
 					ON t1.ID = r.TEAM1
-					LEFT JOIN wm2014_teams t2
+					LEFT JOIN competition_teams t2
 					ON t2.ID = r.TEAM2
 					WHERE RESULT = ".$_GET['game'];
 	}
@@ -49,12 +49,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 					t1.ShortName AS TSN1, t1.FullName AS TFN1, t1.Flag AS TFLG1,
 					t2.ShortName AS TSN2, t2.FullName AS TFN2, t2.Flag AS TFLG2,
 					r.RESULT1, r.RESULT2
-					FROM wm2014_plan p
-					LEFT JOIN wm2014_results r
+					FROM competition_plan p
+					LEFT JOIN competition_results r
 					ON r.ID = p.RESULT
-					LEFT JOIN wm2014_teams t1
+					LEFT JOIN competition_teams t1
 					ON t1.ID = r.TEAM1
-					LEFT JOIN wm2014_teams t2
+					LEFT JOIN competition_teams t2
 					ON t2.ID = r.TEAM2
 					WHERE NOW() > p.Anpfiff
 					ORDER BY TIMEDIFF(NOW(), p.Anpfiff) ASC, p.RESULT ASC
@@ -72,7 +72,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	$TFN2    = $game['TFN2'];
 	$TFLG2   = $game['TFLG2'];
 	
-	$res_matchIds = mysqli_query($mySql, "SELECT RESULT FROM wm2014_plan ORDER BY Anpfiff ASC;");
+	$res_matchIds = mysqli_query($mySql, "SELECT RESULT FROM competition_plan ORDER BY Anpfiff ASC;");
 	while ($rowMatchId = mysqli_fetch_assoc($res_matchIds)) {
 		$matchIds[] = $rowMatchId['RESULT'];
 	}
@@ -117,8 +117,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	</thead>
 	<tbody>";
 	
-	$query = " SELECT u.ID, Username, BET1, BET2 FROM wm2014_users u
-				LEFT JOIN wm2014_bets b
+	$query = " SELECT u.ID, Username, BET1, BET2 FROM competition_users u
+				LEFT JOIN competition_bets b
 				ON b.RESULT_ID = ".$game['RESULT']." AND u.ID=b.USER_ID
 				ORDER BY LOWER(u.Username) ASC";
 	$res = mysqli_query($mySql, $query);

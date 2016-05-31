@@ -23,7 +23,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta name="author" content="Marcel Daneyko">
 		<meta http-equiv="content-type" content="text/html; charset=iso-8859-15" />
-		<link href="css/wm2014.css" rel="stylesheet" type="text/css">
+		<link href="css/competition.css" rel="stylesheet" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -100,7 +100,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		// ************* Bonusfragen *************
 		
 		// teams
-		$sql = "SELECT ID, ShortName, FullName, Flag, InGroup FROM wm2014_teams ORDER BY FullName ASC;";
+		$sql = "SELECT ID, ShortName, FullName, Flag, InGroup FROM competition_teams ORDER BY FullName ASC;";
 		$result = mysqli_query($mySql, $sql);
 		if (!$result) {
 		  die('Error: ' . mysqli_error($mySql));
@@ -112,8 +112,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		// questions
 		$sql = "SELECT ID, QUESTION, TYPE, POINTS, (BET_LIMIT < NOW()) AS EXPIRED, BONUS_BET
-				FROM wm2014_bonus b
-				LEFT JOIN wm2014_bonus_bets bb
+				FROM competition_bonus b
+				LEFT JOIN competition_bonus_bets bb
 				ON b.ID = bb.BONUS_ID
 				AND bb.USER_ID = $aId
 				ORDER BY b.ID ASC;";

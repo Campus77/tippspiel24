@@ -34,7 +34,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 
 	// 1. get all users and prepare ranking table
 	$ranking = Array();
-	$query = "	SELECT u.ID AS uid, u.Username AS name FROM wm2014_users AS u";
+	$query = "	SELECT u.ID AS uid, u.Username AS name FROM competition_users AS u";
 	$res = mysqli_query($mySql, $query);
 	while ($row = mysqli_fetch_assoc($res)) {
 		$ranking[$row['uid']] = Array(
@@ -46,10 +46,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 
 	// 2. get all bets with existing results (!= null)
 	$query = "	SELECT b.USER_ID AS uid, u.Username AS name, b.BET1 as b1, b.BET2 AS b2, r.RESULT1 AS r1, r.RESULT2 AS r2
-				FROM `wm2014_bets` as b
-				LEFT JOIN `wm2014_results` AS r
+				FROM `competition_bets` as b
+				LEFT JOIN `competition_results` AS r
 				ON b.RESULT_ID = r.ID
-				LEFT JOIN `wm2014_users` AS u
+				LEFT JOIN `competition_users` AS u
 				ON b.USER_ID = u.ID
 				WHERE NOT ISNULL(r.RESULT1) AND NOT ISNULL(r.RESULT2)";
 
@@ -60,10 +60,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 
 	// 3. get all bonus bets with existing results
 	$query = "	SELECT bb.USER_ID AS uid, u.Username AS name, bb.BONUS_BET, b.RESULT, b.TYPE, b.POINTS
-				FROM `wm2014_bonus_bets` as bb
-				LEFT JOIN `wm2014_bonus` AS b
+				FROM `competition_bonus_bets` as bb
+				LEFT JOIN `competition_bonus` AS b
 				ON bb.BONUS_ID = b.ID
-				LEFT JOIN `wm2014_users` AS u
+				LEFT JOIN `competition_users` AS u
 				ON bb.USER_ID = u.ID
 				WHERE NOT ISNULL(b.RESULT)";
 

@@ -23,7 +23,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta name="author" content="Marcel Daneyko" />
 		 <meta http-equiv="content-type" content="text/html; charset=iso-8859-15" />
-		<link href="css/wm2014.css" rel="stylesheet" type="text/css" />
+		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel="stylesheet" type="text/css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1" />
 		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>

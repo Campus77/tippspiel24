@@ -20,13 +20,13 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<meta name="author" content="Marcel Daneyko">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<link href="css/wm2014.css" rel="stylesheet" type="text/css" />
+		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel="stylesheet" type="text/css" />
 <?php
 		//<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 		//<script src="scripts_login.js"></script>
 ?>
-		<title>WM2014</title>
+		<title>EM 2016</title>
 	</head>
 
 	<body id="login_body">
