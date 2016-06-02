@@ -1,4 +1,6 @@
-<!--
+<div>
+<?php
+/*
 This file is part of tippspiel24.
 
 tippspiel24 is free software: you can redistribute it and/or modify
@@ -13,9 +15,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
- -->
- <div>
-<?php
+*/
+
 	include('functions.php');
 	// TODO: SQL kram auslagern!
 

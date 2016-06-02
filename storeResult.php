@@ -16,7 +16,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
  -->
  <html>
 <head>
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script>
 		$(document).ready(function(){
 

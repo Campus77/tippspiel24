@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 This file is part of tippspiel24.
 
 tippspiel24 is free software: you can redistribute it and/or modify
@@ -13,8 +14,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
- -->
- <?php
+*/
+
 session_start();
 if (! isset($_SESSION["activeUser"]) )
 {
@@ -24,6 +25,7 @@ if (! isset($_SESSION["activeUser"]) )
 else
 {
 	session_destroy();
-	header('Location: index.php');
+	header('Location: /');
+	exit;
 }
 ?>

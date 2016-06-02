@@ -33,7 +33,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 
 	function GetResult($content, $row) {
-//		$BASE_URL = "http://footballdb.herokuapp.com/api/v1/event/world.2014/";
+//		$BASE_URL = "https://footballdb.herokuapp.com/api/v1/event/world.2014/";
 //		$roundsUrl = $BASE_URL ."rounds";
 //		$roundUrl = $BASE_URL ."round/3";
 

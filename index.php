@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 This file is part of tippspiel24.
 
 tippspiel24 is free software: you can redistribute it and/or modify
@@ -13,17 +14,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
- -->
+*/
+?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="author" content="Marcel Daneyko">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<link href="css/competition.css" rel="stylesheet" type="text/css" />
-		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel="stylesheet" type="text/css" />
+		<link href="css/competition.css" rel="stylesheet prefetch" type="text/css" />
+		<link href='fonts/roboto.css' rel="stylesheet prefetch" type="text/css" />
 <?php
-		//<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		//<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		//<script src="scripts_login.js"></script>
 ?>
 		<title>EM 2016</title>
@@ -47,7 +51,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<div style="height:40px;"></div>
 <?php
 		//<div>
-			// <a id="register" href="#" >Hier erst einmal anmelden</a>
+		//	<a id="register" href="#" >Hier erst einmal anmelden</a>
 		// </div>
 ?>
 	</form>
@@ -55,8 +59,5 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 <footer>
       	Bitte Cookies zulassen!
 </footer>
-		<?php
-			// include('scripts_login.php');
-		?>
 	</body>
 </html>
