@@ -15,7 +15,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 session_start();
 if (md5($_POST["password"]) != md5($_POST["password2"]))
 {
@@ -41,7 +40,7 @@ $user = mysqli_real_escape_string($mySql, $_POST["username"]);
 $sql="SELECT COUNT(*) FROM competition_users WHERE Username LIKE '".$user."';";
 if (mysqli_fetch_row(mysqli_query($mySql, $sql))[0] > 0) {
 	// user already exists
-	header("Location: ../index.php?error=reg_user_exists");
+	header("Location: ../?error=reg_user_exists");
 	exit;
 }
 
@@ -63,6 +62,6 @@ $mySql->close();
 
 $_SESSION["activeUser"] = $user;
 $_SESSION["activeUserId"] = $row['ID'];
-header('Location: ../ranking');
+header('Location: /ranking');
 exit;
 ?>

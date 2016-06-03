@@ -26,18 +26,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link href="css/competition.css" rel="stylesheet prefetch" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet prefetch" type="text/css" />
-<?php
-		//<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-		//<script src="scripts_login.js"></script>
-?>
 		<title>EM 2016</title>
 	</head>
 
 	<body id="login_body">
 		<header>
-			<?php
-			   //include ('navi_login.php');
-			?>
 		</header>
 		<section id="content" class="center">
 		</section>

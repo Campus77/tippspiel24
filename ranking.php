@@ -1,5 +1,5 @@
- <?php
- /*
+<?php
+/*
 This file is part of tippspiel24.
 
 tippspiel24 is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta name="author" content="Marcel Daneyko" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="js/jquery-1.10.2.min.js"></script>
 		<title><?php echo Navi::getTitle(); ?></title>
 	</head>
 

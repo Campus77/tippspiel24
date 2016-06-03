@@ -18,91 +18,56 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 	include('functions.php');
-	// TODO: SQL kram auslagern!
+	require_once('database.php');
+	$db = Database::getInstance();
 
-	$ini_array = parse_ini_file("config.ini", TRUE);
-	$mySql = new mysqli($ini_array["database"]["host"], $ini_array["database"]["user"], $ini_array["database"]["pwd"], $ini_array["database"]["db"]);
 
-	/* check connection */
-	if (mysqli_connect_errno()) {
-		printf("Connect failed: %s\n", mysqli_connect_error());
-		exit();
-	}
-
-	// 1a. check if Game ID is set
-	if (isset($_GET['game'])) {
-		$query = "	SELECT p.Anpfiff > NOW() AS HIDDEN, p.RESULT, DATE_FORMAT(p.Anpfiff, '%d.%m.%Y %H:%i') AS KICKOFF,  p.Ort,
-					t1.ShortName AS TSN1, t1.FullName AS TFN1, t1.Flag AS TFLG1,
-					t2.ShortName AS TSN2, t2.FullName AS TFN2, t2.Flag AS TFLG2,
-					r.RESULT1, r.RESULT2
-					FROM competition_plan p
-					LEFT JOIN competition_results r
-					ON r.ID = p.RESULT
-					LEFT JOIN competition_teams t1
-					ON t1.ID = r.TEAM1
-					LEFT JOIN competition_teams t2
-					ON t2.ID = r.TEAM2
-					WHERE RESULT = ".$_GET['game'];
-	}
-	// 1b. if no game id given -> get game id of nearest match
-	else {
-		$query = "	SELECT p.Anpfiff > NOW() AS HIDDEN, p.RESULT, DATE_FORMAT(p.Anpfiff, '%d.%m.%Y %H:%i') AS KICKOFF, p.Ort,
-					t1.ShortName AS TSN1, t1.FullName AS TFN1, t1.Flag AS TFLG1,
-					t2.ShortName AS TSN2, t2.FullName AS TFN2, t2.Flag AS TFLG2,
-					r.RESULT1, r.RESULT2
-					FROM competition_plan p
-					LEFT JOIN competition_results r
-					ON r.ID = p.RESULT
-					LEFT JOIN competition_teams t1
-					ON t1.ID = r.TEAM1
-					LEFT JOIN competition_teams t2
-					ON t2.ID = r.TEAM2
-					WHERE NOW() > p.Anpfiff
-					ORDER BY TIMEDIFF(NOW(), p.Anpfiff) ASC, p.RESULT ASC
-					LIMIT 0,1";
-	}
-				
-	$game = mysqli_fetch_assoc(mysqli_query($mySql, $query));
+	$matchid = isset($_GET['match']) ? $_GET['match'] : FALSE;
+	$match = $db->getMatch($matchid);
+	$matchids = $db->getAllMatchIds();
 	
-	$RESULT1 = FormatValue($game['RESULT1'], 2, FALSE);
-	$RESULT2 = FormatValue($game['RESULT2'], 2, FALSE);
-	$TSN1    = $game['TSN1'];
-	$TFN1    = $game['TFN1'];
-	$TFLG1   = $game['TFLG1'];
-	$TSN2    = $game['TSN2'];
-	$TFN2    = $game['TFN2'];
-	$TFLG2   = $game['TFLG2'];
-	
-	$res_matchIds = mysqli_query($mySql, "SELECT RESULT FROM competition_plan ORDER BY Anpfiff ASC;");
-	while ($rowMatchId = mysqli_fetch_assoc($res_matchIds)) {
-		$matchIds[] = $rowMatchId['RESULT'];
+	// no match played? show first match
+	if (count($match) == 0) {
+		$match = $db->getMatch($matchids[0]);
 	}
 	
-	for ($i = 0; $i < count($matchIds); ++$i) {
-		if ($matchIds[$i] == $game['RESULT']) {
-			$prevIdx = ($i > 0 ? $matchIds[$i - 1] : null);
-			$nextIdx = ($i < count($matchIds) - 1 ? $matchIds[$i + 1] : null);
+	$matchid = $match['id'];
+	$kickoff = $match['kickoff'];
+	$location = $match['location'];
+	$result1 = FormatValue($match['result1'], 2, FALSE);
+	$result2 = FormatValue($match['result2'], 2, FALSE);
+	$tsn1    = $match['tsn1'];
+	$tfn1    = $match['tfn1'];
+	$tflg1   = $match['tflg1'];
+	$tsn2    = $match['tsn2'];
+	$tfn2    = $match['tfn2'];
+	$tflg2   = $match['tflg2'];
+	
+	for ($i = 0; $i < count($matchids); ++$i) {
+		if ($matchids[$i] == $match['id']) {
+			$prevIdx = ($i > 0 ? $matchids[$i - 1] : null);
+			$nextIdx = ($i < count($matchids) - 1 ? $matchids[$i + 1] : null);
 		}
 	}
 	
-	$linkPrev = (is_null($prevIdx) ? "&nbsp;" : "<a href=\"results.php?game=$prevIdx\">&lt;&nbsp;zur&uuml;ck</a>");
-	$linkNext = (is_null($nextIdx) ? "&nbsp;" : "<a href=\"results.php?game=$nextIdx\">weiter&nbsp;&gt;</a>");
+	$linkPrev = (is_null($prevIdx) ? "&nbsp;" : "<a href=\"results?match=$prevIdx\">&lt;&nbsp;vorheriges</a>");
+	$linkNext = (is_null($nextIdx) ? "&nbsp;" : "<a href=\"results?match=$nextIdx\">nächstes&nbsp;&gt;</a>");
 	
 	echo "<div class=\"result\">
 			  <div class=\"centercont\">
-				 <div class=\"goal\">$RESULT1</div>
-				 <div class=\"flag\"><img src=\"$TFLG1\" alt=\"$TSN1\"></div>
-				 <div class=\"desc\">$TSN1</div>
-				 <div class=\"desc\">$TSN2</div>
-				 <div class=\"flag\"><img src=\"$TFLG2\" alt=\"$TSN2\"></div>
-				 <div class=\"goal\">$RESULT2</div>
+				 <div class=\"goal\">$result1</div>
+				 <div class=\"flag\"><img src=\"$tflg1\"></div>
+				 <div class=\"desc\">$tsn1</div>
+				 <div class=\"desc\">$tsn2</div>
+				 <div class=\"flag\"><img src=\"$tflg2\"></div>
+				 <div class=\"goal\">$result2</div>
 			  </div>
 			  <div class=\"info\">
-				<h2>$TFN1 - $TFN2</h2>
-				<h2>{$game['KICKOFF']}, {$game['Ort']}</h2>
+				<h2>$tfn1 - $tfn2</h2>
+				<h2>$kickoff, $location</h2>
 				<br/>
 			  </div>
-			  <div class=\"centercontent\">
+			  <div class=\"centercont\">
 				<div class=\"naviResults\" style=\"float: left\">$linkPrev</div>
 				<div class=\"naviResults\" style=\"float: right\">$linkNext</div>
 			  </div>
@@ -118,21 +83,17 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	</thead>
 	<tbody>";
 	
-	$query = " SELECT u.ID, Username, BET1, BET2 FROM competition_users u
-				LEFT JOIN competition_bets b
-				ON b.RESULT_ID = ".$game['RESULT']." AND u.ID=b.USER_ID
-				ORDER BY LOWER(u.Username) ASC";
-	$res = mysqli_query($mySql, $query);
-	while ($row = mysqli_fetch_assoc($res)) {
-		$BET1 = FormatValue($row['BET1'], 2, $game['HIDDEN']);
-		$BET2 = FormatValue($row['BET2'], 2, $game['HIDDEN']);
-		$POINTS = (is_null($row['BET1']) || is_null($row['BET2']) || is_null($game['RESULT1']) || is_null($game['RESULT2']) ?
-					'--' : CalcScoreForMatch($row['BET1'], $row['BET2'], $game['RESULT1'], $game['RESULT2']));
+	$bets = $db->getAllBetsForMatch($matchid);
+	foreach ($bets as $bet) {
+		$bet1 = FormatValue($bet['bet1'], 2, $match['hidden']);
+		$bet2 = FormatValue($bet['bet2'], 2, $match['hidden']);
+		$points = (is_null($bet['bet1']) || is_null($bet['bet2']) || is_null($match['result1']) || is_null($match['result2']) ?
+					'--' : CalcScoreForMatch($bet['bet1'], $bet['bet2'], $match['result1'], $match['result2']));
 
 		$colors = Array( 4 => 'gold', 3 => 'silver', 2 => 'bronze');
-		$color = (array_key_exists($POINTS, $colors) ? $colors[$POINTS] : 'standard');
+		$color = (array_key_exists($points, $colors) ? $colors[$points] : 'standard');
 
-		echo "<tr class=\"ranking_$color\"><td>{$row['Username']}</td><td>$BET1:$BET2</td><td>$POINTS</td></tr>";
+		echo "<tr class=\"ranking_$color\"><td>{$bet['username']}</td><td>$bet1:$bet2</td><td>$points</td></tr>";
 	}
 			
 	echo "</tbody>

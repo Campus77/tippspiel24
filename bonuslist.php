@@ -50,7 +50,7 @@
 					case 'TEAM':
 					case 'TEAM2':
 					case 'TEAM4':
-					case 'TEAM8GROUP':
+					case 'TEAMGROUP':
 						result = FormatFlag(bonusresults[idx].result);
 						break;
 					default:
@@ -63,7 +63,7 @@
 						case 'TEAM':
 						case 'TEAM2':
 						case 'TEAM4':
-						case 'TEAM8GROUP':
+						case 'TEAMGROUP':
 							bet = FormatFlag(e.bet);
 							points = Format(SumSubPoints(e.points));
 							break;
@@ -90,63 +90,46 @@
 	</script>
 <?php
 	include('functions.php');
-// TODO: SQL kram auslagern!
-
-	$ini_array = parse_ini_file("config.ini", TRUE);
-	$mySql = new mysqli($ini_array["database"]["host"], $ini_array["database"]["user"], $ini_array["database"]["pwd"], $ini_array["database"]["db"]);
-
-	/* check connection */
-	if (mysqli_connect_errno()) {
-		printf("Connect failed: %s\n", mysqli_connect_error());
-		exit();
-	}
+	require_once('database.php');
+	
+	$db = Database::getInstance();
 
 	// get all flags
-	$query = "SELECT ShortName, Flag FROM competition_teams ORDER BY ShortName";
-	$res_flags = mysqli_query($mySql, $query);
+	$teams = $db->getAllTeams();
 	$flags = array();
-	while ($rowFlags = mysqli_fetch_assoc($res_flags)) {
-		$flags[$rowFlags['ShortName']] = $rowFlags['Flag'];
+	foreach ($teams as $t)
+	{
+		$flags[$t['shortname']] = $t['flag'];
 	}
 	echo "<script> var flags = ".json_encode($flags)."; </script>";
 	
 	// get all bonus questions
-	$query = "SELECT b.ID, b.QUESTION, b.TYPE, b.RESULT, b.BET_LIMIT, b.POINTS FROM competition_bonus b ORDER BY ID";
-	$res_bonus = mysqli_query($mySql, $query);
-	$bonus = array();
-	while ($rowBonus = mysqli_fetch_assoc($res_bonus)) {
-		$bid = $rowBonus['ID'];
-		$bonus[$bid] = array(
-						'question' => $rowBonus['QUESTION'],
-						'result' => $rowBonus['RESULT'],
-						'type' => $rowBonus['TYPE'],
-						'bets' => array()
-					);
+	$bonus = $db->getAllBonusQuestions();
+	foreach ($bonus as $b) {
+		$bid = $b['id'];
 
-		$queryPerBet = "SELECT u.UserName, bb.BONUS_BET FROM competition_users u
-						LEFT JOIN competition_bonus_bets bb
-						ON u.ID = bb.USER_ID AND bb.BONUS_ID = $bid
-						ORDER BY LOWER(u.UserName) ASC";
-		$res_bonusBet = mysqli_query($mySql, $queryPerBet);
-		while ($rowBonusBet = mysqli_fetch_assoc($res_bonusBet)) {
+		$bonusbets = $db->getBonusBetForBonus($bid);
+		
+		foreach ($bonusbets as $bonusbet)
+		{
 			$bonus[$bid]['bets'][] = array(
-				'user' => $rowBonusBet['UserName'],
-				'bet' => $rowBonusBet['BONUS_BET'],
-				'points' => CalcScoreForBonus($rowBonusBet['BONUS_BET'], $rowBonus['RESULT'], $rowBonus['TYPE'], $rowBonus['POINTS'])
+				'user' => $bonusbet['username'],
+				'bet' => $bonusbet['bonus_bet'],
+				'points' => CalcScoreForBonus($bonusbet['bonus_bet'], $b['result'], $b['type'], $b['points'])
 			);
 		}
 	}
 	echo "<script> var bonusresults = ".json_encode(array_values($bonus))."; </script>";
 
-	$linkPrev = "<a class=\"bonusNav\" id=\"btnPrev\" href=\"#\">&lt;&nbsp;zur&uuml;ck</a>";
-	$linkNext = "<a class=\"bonusNav\" id=\"btnNext\" href=\"#\">weiter&nbsp;&gt;</a>";
+	$linkPrev = "<a class=\"bonusNav\" id=\"btnPrev\" href=\"#\">&lt;&nbsp;vorheriges</a>";
+	$linkNext = "<a class=\"bonusNav\" id=\"btnNext\" href=\"#\">nächstes&nbsp;&gt;</a>";
 	
 	echo "<br/><br/><div class=\"result\">
 			  <div class=\"centercont\">
 				 <div id=\"question\" class=\"desc\" style=\"min-width: 100% !important; max-width: 100% !important;\">&nbsp;</div>
 				 <div id=\"result\" class=\"desc\" style=\"min-width: 100% !important; max-width: 100% !important;\">&nbsp;</div>
 			  </div>
-			  <div class=\"centercontent\">
+			  <div class=\"centercont\">
 				<div class=\"naviResults\" style=\"float: left\">$linkPrev</div>
 				<div class=\"naviResults\" style=\"float: right\">$linkNext</div>
 			  </div>
@@ -160,19 +143,7 @@
 				<td style=\"width: 10%\">Punkte</td>
 			</tr>
 	</thead>
-	<tbody>";
-	
-		// $BET1 = FormatValue($row['BET1'], 2, $game['HIDDEN']);
-		// $BET2 = FormatValue($row['BET2'], 2, $game['HIDDEN']);
-		// $POINTS = (is_null($row['BET1']) || is_null($row['BET2']) || is_null($game['RESULT1']) || is_null($game['RESULT2']) ?
-					// '--' : CalcScoreForMatch($row['BET1'], $row['BET2'], $game['RESULT1'], $game['RESULT2']));
-
-		// $colors = Array( 4 => 'gold', 3 => 'silver', 2 => 'bronze');
-		// $color = (array_key_exists($POINTS, $colors) ? $colors[$POINTS] : 'standard');
-
-//		echo "<tr class=\"ranking_$color\"><td>{$row['Username']}</td><td>$BET1:$BET2</td><td>$POINTS</td></tr>";
-			
-	echo "</tbody>
+	<tbody></tbody>
 	<tfoot></tfoot>
 </table>";
 

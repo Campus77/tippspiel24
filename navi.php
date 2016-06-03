@@ -23,13 +23,17 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 				"tipps"		=>	"Tippabgabe",
 				"ranking"	=>	"Bestenliste",
 				"results"	=>	"Ergebnisse",
-				"bonusresults"		=>	"Bonus",
-				"logout"	=>	"Logout"
+				"bonus"		=>	"Bonus",
+				"logout"		=>	"Logout"
 			);
 		
 		static private function getPageTitle()
 		{
-			return self::$naviMap[self::getPage()];
+			$page = self::getPage();
+			if (in_array($page, array_keys(self::$naviMap))) {
+				return self::$naviMap[$page];
+			}
+			return "";
 		}
 		
 		static private function getPage()
