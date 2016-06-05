@@ -76,10 +76,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			echo "<div class=\"match $matchClass\" id=\"match\" value=\"$id\">
 				  <div class=\"centercont\">
 					 <div class=\"goal\" value=\"$bet1\">$bet1</div>
-					 <div class=\"flag\"><img id=\"goal\" src=\"$tflg1\" alt=\"$tsn1\"></div>
+					 <div class=\"flag flag-$tflg1\"></div>
 					 <div class=\"desc\">$tsn1</div>
 					 <div class=\"desc\">$tsn2</div>
-					 <div class=\"flag\"><img id=\"goal\" src=\"$tflg2\" alt=\"$tsn2\"></div>
+					 <div class=\"flag flag-$tflg2\"></div>
 					 <div class=\"goal\" value=\"$bet2\">$bet2</div>
 				  </div>
 				  <div class=\"info\">

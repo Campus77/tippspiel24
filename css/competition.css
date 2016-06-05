@@ -599,14 +599,6 @@ div.bet_submit {
   margin-top: 0.5em;
 }
 
-
-.flag img,
-img.flag {
-	display: inline-block;
-	height: 22px;
-	width: 38px;
-}
-
 div.desc {
   display: inline-block;
   font-family: 'Fjalla One', sans-serif;
@@ -626,10 +618,6 @@ padding-top: 15px;
 
 div.flag {
   display: inline-block;
-  min-width: 10%;
-  max-width: 25%;
-  padding: 5px;
-  height:100%;
   vertical-align: middle;
 }
 

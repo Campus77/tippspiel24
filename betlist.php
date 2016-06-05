@@ -56,10 +56,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	echo "<div class=\"result\">
 			  <div class=\"centercont\">
 				 <div class=\"goal\">$result1</div>
-				 <div class=\"flag\"><img src=\"$tflg1\"></div>
+				 <div class=\"flag flag-$tflg1\"></div>
 				 <div class=\"desc\">$tsn1</div>
 				 <div class=\"desc\">$tsn2</div>
-				 <div class=\"flag\"><img src=\"$tflg2\"></div>
+				 <div class=\"flag flag-$tflg2\"></div>
 				 <div class=\"goal\">$result2</div>
 			  </div>
 			  <div class=\"info\">

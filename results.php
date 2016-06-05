@@ -25,6 +25,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link href="css/competition.css" rel="stylesheet" type="text/css" />
+		<link href="css/flags.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<title><?php echo Navi::getTitle(); ?></title>
