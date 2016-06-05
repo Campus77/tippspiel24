@@ -15,6 +15,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+include ('regtoken.php');
+
+$errors = array(
+	"reg_user_exists" => "Der Benutzername ist bereits vergeben, bitte wähle einen anderen aus.",
+	"reg_pw_mismatch" => "Die Passwörter stimmen nicht überein.",
+	"reg_db_error"    => "Datenbank-Fehler. Bitte Admins kontaktieren."
+);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,8 +33,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<link href="css/competition.css" rel="stylesheet prefetch" type="text/css" />
-		<link href='fonts/roboto.css' rel="stylesheet prefetch" type="text/css" />
+		<link href="css/competition.css" rel="stylesheet" type="text/css" />
+		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
 		<title>EM 2016</title>
 	</head>
 
@@ -34,23 +43,42 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		</header>
 		<section id="content" class="center">
 		</section>
-<div class="wm-form">
-	<h1>Login</h1>
-	<form action="modules/user_login.php" method="post">
-		<input type="text" name="username" placeholder="Username" required />
-		<input type="password" name="password" placeholder="Password" required />
-		
-		<input type="submit" value="log in" />
-		<div style="height:40px;"></div>
+
 <?php
-		//<div>
-		//	<a id="register" href="#" >Hier erst einmal anmelden</a>
-		// </div>
+	$error = isset($_GET['error']) ? $_GET['error'] : FALSE;
+	$errorText = "";
+	if ($error && array_key_exists($error, $errors)) {
+		$errorText = "<div class=\"error\">" . $errors[$error] . "</div>";
+	}
+
+	if (isset($_GET['register']) && $_GET['register'] == $regToken) {
+		echo <<< EOT
+		 <div class="wm-form">
+			<h1>Deine Daten</h1>
+			$errorText
+			<form action="modules/user_register.php" method="post">
+				<input type="hidden" name="regtoken" value="{$_GET['register']}" />
+				<input type="text" name="username" placeholder="Benutzername" required />
+				<input type="email" name="email" placeholder="E-Mail" optional />
+				<input type="password" name="password" placeholder="Passwort" required />
+				<input type="password" name="password2" placeholder="Nochmal Passwort" required />
+				<div style="width: 100%; height:40px"><input type="submit" value="registrieren" /></div>
+			</form>
+		</div>		
+EOT;
+	}
+	else {
+		echo <<< EOT
+		<div class="wm-form">
+			<h1>Login</h1>
+			<form action="modules/user_login.php" method="post">
+				<input type="text" name="username" placeholder="Benutzer" required />
+				<input type="password" name="password" placeholder="Passwort" required />
+				<div style="width: 100%; height:40px"><input type="submit" value="anmelden" /></div>
+			</form>
+		</div>
+EOT;
+	}
 ?>
-	</form>
-</div>
-<footer>
-      	Bitte Cookies zulassen!
-</footer>
 	</body>
 </html>

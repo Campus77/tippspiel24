@@ -309,7 +309,25 @@ class Database {
 		$sql = "INSERT INTO competition_bonus_bets (user_id, bonus_id, bonus_bet) VALUES (?, ?, ?);";
 		$this->execute($sql, array($userid, $bonusid, (is_null($bonusbet) ? null : $bonusbet)));
 	}
-	
+
+	public function usernameExists($username)
+	{
+		$sql = "SELECT COUNT(*) AS `exists` FROM competition_users WHERE username = ?";
+		$res = $this->execute($sql, array($username));
+		$exists = (count($res) == 1 && $res[0]['exists'] > 0);
+		return $exists;
+	}
+
+	public function registerUser($username, $password, $email)
+	{
+		$sql = "INSERT INTO competition_users (username, password, email) VALUES (?, ?, ?)";
+		$res = $this->execute($sql, array($username, $password, $email));
+		$sql = "SELECT id FROM competition_users WHERE username = ?";
+		$res = $this->execute($sql, array($username));
+		$id = (count($res) == 1 ? $res[0]['id'] : FALSE);
+		return $id;
+	}
+
 }
 
 ?>

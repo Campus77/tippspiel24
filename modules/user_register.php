@@ -15,53 +15,39 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
+require_once ('../database.php');
+
+$db = Database::getInstance();
+
+function handleError($errCode) {
+	session_destroy();
+	header('Location: /?register=' . $_POST['regtoken'] . '&error=' . $errCode);
+	exit();
+}
+
 session_start();
 if (md5($_POST["password"]) != md5($_POST["password2"]))
 {
-    printf("Passwords are not identical :-(\n");
-	session_destroy();
-	exit();
+    handleError("reg_pw_mismatch");
 }
-$ini_array = parse_ini_file("../config.ini", TRUE);
-$mySql = new mysqli($ini_array["database"]["host"], $ini_array["database"]["user"], $ini_array["database"]["pwd"], $ini_array["database"]["db"]);
 
-/* check connection */
-if (mysqli_connect_errno()) {
-	die('Connect failed: ' . mysqli_connect_error());
-	session_destroy();
-    exit();
-}
-$mail = mysqli_real_escape_string($mySql, $_POST["Email"]);
-$pwd = md5(mysqli_real_escape_string($mySql, $_POST["password"]));
-$user = mysqli_real_escape_string($mySql, $_POST["username"]);
+$username = $_POST["username"];
+$password = md5($_POST["password"]);
+$email = $_POST["email"];
 
 // check if user exists
-
-$sql="SELECT COUNT(*) FROM competition_users WHERE Username LIKE '".$user."';";
-if (mysqli_fetch_row(mysqli_query($mySql, $sql))[0] > 0) {
-	// user already exists
-	header("Location: ../?error=reg_user_exists");
-	exit;
+if ($db->usernameExists($username)) {
+	handleError('reg_user_exists');
 }
 
-$sql="INSERT INTO competition_users (EMail, Password, Username) VALUES ('$mail', '$pwd', '$user')";
-if (! mysqli_query($mySql, $sql)) {
-  die('Error: ' . mysqli_error($mySql));
-  session_destroy();
+$id = $db->registerUser($username, $password, $email);
+
+if ($id === FALSE) {
+	handleError('reg_db_error');
 }
 
-$sql="SELECT ID FROM competition_users WHERE Username LIKE '$user';";
-$result = mysqli_query($mySql, $sql);
-if (!$result) {
-  die('Error: ' . mysqli_error($mySql));
-  session_destroy();
-}
-
-$row = mysqli_fetch_assoc($result);
-$mySql->close();
-
-$_SESSION["activeUser"] = $user;
-$_SESSION["activeUserId"] = $row['ID'];
+$_SESSION["activeUser"] = $username;
+$_SESSION["activeUserId"] = $id;
 header('Location: /ranking');
 exit;
 ?>
