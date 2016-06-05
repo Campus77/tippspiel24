@@ -15,6 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
+	require_once ('database.php');
+	
 	class Navi
 	{
 		const PAGENAME = "EM 2016";
@@ -43,10 +45,15 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		
 		static public function getMenu()
 		{
-			$out = "	<div id=\"navi\"><nav><a href=\"#\" id=\"menu-icon\"></a><ul>";
+			$db = Database::getInstance();
+			$openBonusBets = $db->hasOpenBonusBetsForUser(intval($_SESSION['activeUserId'])) && $db->areBonusBetsAllowed();
+			$out = "<div id=\"navi\"><nav><a href=\"#\" id=\"menu-icon\"></a><ul>";
 
 			foreach (self::$naviMap as $link => $title)
-				$out .= "<li id=\"elem\"><a href=\"$link\"><span id=\"elem\">$title</span></a></li>";
+			{
+				$extraClass = ($link == 'bonus' && $openBonusBets) ? " class=\"attention\"" : "";
+				$out .= "<li id=\"elem\" $extraClass><a href=\"$link\"><span id=\"elem\">$title</span></a></li>";
+			}
 
 			$out .= "</ul></nav></div><div id=\"title\">
 					<h1>".ucfirst($_SESSION["activeUser"])."'s EM 2016</h1>

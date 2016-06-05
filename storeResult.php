@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
  -->
- <html>
+<html>
 <head>
 	<script src="js/jquery-1.10.2.min.js"></script>
 	<script>
@@ -39,30 +39,63 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		});
 	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
 <?php
 	require_once ('database.php');
 	
 	$db = Database::getInstance();
-	
-	foreach ($_POST as $key => $value)
-	{
-		if (preg_match("/^matchid_(\\d+)$/", $key, $matches)) {
-			$idx = $matches[1];
-			$result1 = $_POST['r1_'.$idx];
-			$result2 = $_POST['r2_'.$idx];
-			if ($result1 === "") $result1 = null;
-			if ($result2 === "") $result2 = null;
-			$matchid = $value;
-			$db->updateMatchResult($matchid, $result1, $result2);
+
+	function showTeamCombo($name) {
+		global $db;
+		$teams = $db->getAllTeams();
+		echo "<select name=\"$name\"><option value=\"---\">---</option>";
+		foreach ($teams as $team)
+		{
+			echo "<option value=\"{$team['id']}\">{$team['fullname']}</option>";			
 		}
+		echo "<select>";
+	}
+
+	function showStadiumCombo() {
+		global $db;
+		$stadiums = $db->getAllStadiums();
+		echo "<select name=\"location_id\"><option value=\"---\">---</option>";
+		foreach ($stadiums as $stadium)
+		{
+			echo "<option value=\"{$stadium['id']}\">{$stadium['name']}</option>";			
+		}
+		echo "<select>";
+	}
+
+	
+	if (isset($_POST['action']) && $_POST['action'] == 'storeresults')
+	{
+		foreach ($_POST as $key => $value)
+		{
+			if (preg_match("/^matchid_(\\d+)$/", $key, $matches)) {
+				$idx = $matches[1];
+				$result1 = $_POST['r1_'.$idx];
+				$result2 = $_POST['r2_'.$idx];
+				if ($result1 === "") $result1 = null;
+				if ($result2 === "") $result2 = null;
+				$matchid = $value;
+				$db->updateMatchResult($matchid, $result1, $result2);
+			}
+		}
+	}
+	else if (isset($_POST['action']) && $_POST['action'] == 'addmatch') {
+		$team1_id = $_POST['team1_id'] == '---' ? null : $_POST['team1_id'];
+		$team2_id = $_POST['team2_id'] == '---' ? null : $_POST['team2_id'];
+		$db->addMatch($_POST['kickoff'], $team1_id, $team2_id, $_POST['location_id']);
 	}
 
 	$matches = $db->getAllMatches();
 	$keys = array_keys($matches[0]);
 
-	echo "<form id=\"myform\" action=\"storeResult.php\" method=\"post\"><table><tr>";
+	echo "<form id=\"myform\" action=\"storeResult.php\" method=\"post\">";
+	echo "<input type=\"hidden\" name=\"action\" value=\"updateresults\"><table><tr>";
 	foreach ($keys as $it) {
 		echo "<td>$it</td>";
 	}
@@ -86,19 +119,16 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	echo "</table><input type=\"submit\" value=\"Speichern\"></form>";
 	
-	$teams = $db->getAllTeams();
-	echo "<table>";
-	foreach ($teams as $row)
-	{
-		echo "<tr>";
-		foreach ($row as $key => $value)
-			echo "<td>$value</td>";
-		echo "</tr>";
-	}
-	echo "</table>";
+	echo "<form action=\"storeResult.php\" method=\"post\">";
+	echo "<input type=\"hidden\" name=\"action\" value=\"addmatch\"><table><tr>";
+	echo "<input type=\"text\" name=\"kickoff\" value=\"". (isset($_POST['kickoff']) ? $_POST['kickoff'] : "2016-06-10 18:00:00") . "\">";
+	showStadiumCombo();
+	showTeamCombo('team1_id');
+	showTeamCombo('team2_id');
+	echo "<input type=\"submit\" value=\"neues Match\">";
+	echo "</form>";
 	
-//	mysqli_query($mySql, "UPDATE competition_results SET TEAM2 = 32 WHERE ID = 57");
-
+	
 ?>
 </body>
 </html>

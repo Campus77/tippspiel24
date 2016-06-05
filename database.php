@@ -83,8 +83,8 @@ class Database {
 					b.bet1, b.bet2
 					FROM competition_matches m
 					JOIN competition_locations l ON m.location_id = l.id
-					JOIN competition_teams t1 ON m.team1_id = t1.id
-					JOIN competition_teams t2 ON m.team2_id = t2.id
+					LEFT JOIN competition_teams t1 ON m.team1_id = t1.id
+					LEFT JOIN competition_teams t2 ON m.team2_id = t2.id
 					LEFT JOIN competition_bets b ON m.id = b.match_id AND b.user_id = $uid
 					ORDER BY m.kickoff, m.id ASC;";
 		return $this->execute($sql);
@@ -215,6 +215,12 @@ class Database {
 		$teams = $this->execute($sql);
 		return $teams;
 	}
+
+	public function getAllStadiums()
+	{
+		$sql = "SELECT id, name FROM competition_locations ORDER BY name ASC";
+		return $this->execute($sql);
+	}
 	
 	public function getAllMatches()
 	{
@@ -224,9 +230,9 @@ class Database {
 				FROM competition_matches m
 				JOIN competition_locations l
 				ON m.location_id = l.id
-				JOIN competition_teams t1
+				LEFT JOIN competition_teams t1
 				ON m.team1_id = t1.id
-				JOIN competition_teams t2
+				LEFT JOIN competition_teams t2
 				ON m.team2_id = t2.id
 				ORDER BY m.kickoff, m.id ASC;";
 		return $this->execute($sql);
@@ -236,6 +242,12 @@ class Database {
 	{
 		$sql = "UPDATE competition_matches SET result1 = ?, result2 = ? WHERE id = ?";
 		$this->execute($sql, array($result1, $result2, $matchid));
+	}
+
+	public function addMatch($kickoff, $team1_id, $team2_id, $location_id)
+	{
+		$sql = "INSERT INTO competition_matches (kickoff, team1_id, team2_id, location_id) VALUES (?, ?, ?, ?)";
+		$this->execute($sql, array($kickoff, $team1_id, $team2_id, $location_id));
 	}
 
 	
@@ -305,9 +317,12 @@ class Database {
 		$sql = "DELETE FROM competition_bonus_bets WHERE user_id = ? AND bonus_id = ?";
 		$res = $this->execute($sql, array($userid, $bonusid));
 		
-		// add new bet
-		$sql = "INSERT INTO competition_bonus_bets (user_id, bonus_id, bonus_bet) VALUES (?, ?, ?);";
-		$this->execute($sql, array($userid, $bonusid, (is_null($bonusbet) ? null : $bonusbet)));
+		if (NULL !== $bonusbet)
+		{
+			// add new bet
+			$sql = "INSERT INTO competition_bonus_bets (user_id, bonus_id, bonus_bet) VALUES (?, ?, ?);";
+			$this->execute($sql, array($userid, $bonusid, (is_null($bonusbet) ? null : $bonusbet)));
+		}
 	}
 
 	public function usernameExists($username)
@@ -328,6 +343,18 @@ class Database {
 		return $id;
 	}
 
+	public function hasOpenBonusBetsForUser($userid)
+	{
+		$sql = "SELECT COUNT(*) AS open_bets
+				FROM competition_users u
+				CROSS JOIN competition_bonus b
+				LEFT JOIN competition_bonus_bets bb
+				ON b.id = bb.bonus_id AND u.id = bb.user_id
+				WHERE u.id = ? AND bb.bonus_bet IS NULL";
+		$res = $this->execute($sql, array($userid));
+		$exists = (count($res) == 1 && $res[0]['open_bets'] > 0);
+		return $exists;		
+	}
 }
 
 ?>

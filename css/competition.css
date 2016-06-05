@@ -410,11 +410,11 @@ li#elem {
    float: left;
    padding: 10px;
    cursor: pointer;
+   border-radius: 5px;
 }
 
 li:hover#elem {
-	background-color: #242527;
-	border-radius: 4px 4px 0 0;
+	background-color: #404040;
 	display: block;
 }
 
@@ -423,6 +423,9 @@ li:hover span {
   opacity: 1.0;
 }
 
+.attention {
+	background-color: #D05050 !important;
+}
 
 /*MEDIA QUERY*/
 @media only screen and (max-width : 640px) {

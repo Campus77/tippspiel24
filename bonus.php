@@ -37,7 +37,6 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<title><?php echo Navi::getTitle(); ?></title>
 	</head>
 	<body>
-      
 		<header>
 			<?php
 				echo Navi::getMenu();

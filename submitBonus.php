@@ -25,12 +25,20 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		function formResult($id, $size) {
 			global $_POST;
 			$a = Array();
+			$hasData = FALSE;
 			for ($i = 1; $i <= $size; ++$i) {
 				$item = $_POST["b$id"."_".$i];
-				if ($item == "---" or $item == "") $item = null;
+				if ($item == "---" or $item == "")
+				{
+					$item = NULL;
+				}
+				else
+				{
+					$hasData = TRUE;
+				}
 				$a[] = $item;
 			}
-			return implode(";", $a);
+			return $hasData ? implode(";", $a) : NULL;
 		}
 		
 		// get questions
@@ -40,7 +48,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		// process each question
 		foreach ($bonus as $row)
 		{
-			$res = null;
+			$res = NULL;
 			$id = $row['id'];
 			switch ($row['type']) {
 				case 'TEAM':

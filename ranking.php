@@ -22,10 +22,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 <html>
 	<head>
 		<meta name="author" content="Marcel Daneyko" />
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<title><?php echo Navi::getTitle(); ?></title>
 	</head>

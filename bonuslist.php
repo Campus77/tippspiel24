@@ -122,7 +122,7 @@
 	echo "<script> var bonusresults = ".json_encode(array_values($bonus))."; </script>";
 
 	$linkPrev = "<a class=\"bonusNav\" id=\"btnPrev\" href=\"#\">&lt;&nbsp;vorheriges</a>";
-	$linkNext = "<a class=\"bonusNav\" id=\"btnNext\" href=\"#\">n&auml;chstes&nbsp;&gt;</a>";
+	$linkNext = "<a class=\"bonusNav\" id=\"btnNext\" href=\"#\">nächstes&nbsp;&gt;</a>";
 	
 	echo "<br/><br/><div class=\"result\">
 			  <div class=\"centercont\">
