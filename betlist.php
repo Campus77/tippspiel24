@@ -51,7 +51,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	
 	$linkPrev = (is_null($prevIdx) ? "&nbsp;" : "<a href=\"results?match=$prevIdx\">&lt;&nbsp;vorheriges</a>");
-	$linkNext = (is_null($nextIdx) ? "&nbsp;" : "<a href=\"results?match=$nextIdx\">n&auml;&nbsp;&gt;</a>");
+	$linkNext = (is_null($nextIdx) ? "&nbsp;" : "<a href=\"results?match=$nextIdx\">n&auml;chstes&nbsp;&gt;</a>");
 	
 	echo "<div class=\"result\">
 			  <div class=\"centercont\">
