@@ -83,8 +83,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 					 <div class=\"goal\" value=\"$bet2\">$bet2</div>
 				  </div>
 				  <div class=\"info\">
-						<h2>$tfn1 ".(is_null($row['result1']) || is_null($row['result2']) ? "-" : "{$row['result1']} : {$row['result2']}")." $tfn2</h2>
-						<span id=\"kickoff\">$kickoff, $location</span>
+						<h2>$tfn1 ".(is_null($row['result1']) || is_null($row['result2']) ? "-" : "<b>{$row['result1']} : {$row['result2']}</b>")." $tfn2</h2>
+						<b><span id=\"kickoff\">$kickoff</span></b>
+						<h2>$location</h2>
+						<br/>
 						<h2 id=\"timetobet\">&nbsp;</h2>
 						<br/>
 				  </div>
