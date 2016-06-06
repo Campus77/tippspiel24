@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 /*
 This file is part of tippspiel24.
 
@@ -19,8 +19,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 include ('regtoken.php');
 
 $errors = array(
-	"reg_user_exists" => "Der Benutzername ist bereits vergeben, bitte wähle einen anderen aus.",
-	"reg_pw_mismatch" => "Die Passwörter stimmen nicht überein.",
+	"reg_user_exists" => "Der Benutzername ist bereits vergeben, bitte wÃ¤hle einen anderen aus.",
+	"reg_pw_mismatch" => "Die PasswÃ¶rter stimmen nicht Ã¼berein.",
 	"reg_db_error"    => "Datenbank-Fehler. Bitte Admins kontaktieren."
 );
 

@@ -21,7 +21,7 @@ INSERT INTO `competition_locations` (`id`, `name`) VALUES
 (3, 'Bordeaux - Stade de Bordeaux'),
 (4, 'Marseille - Stade Vélodrome'),
 (5, 'Nizza - Stade de Nice'),
-(6, 'Villeneuve-d’Ascq (Lille) - Stade Pierre-Mauroy'),
+(6, 'Lille - Stade Pierre-Mauroy'),
 (7, 'Tolouse - Stadium de Toulouse'),
 (8, 'Paris Saint-Denis - Stade de France'),
 (9, 'Décines-Charpieu - Stade de Lyon'),
@@ -179,8 +179,8 @@ CREATE TABLE IF NOT EXISTS `competition_users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
-INSERT INTO `competition_users` (`id`, `email`, `password`, `username`) VALUES
-(1, '', MD5('12345'), 'testuser');
+-- INSERT INTO `competition_users` (`id`, `email`, `password`, `username`) VALUES
+-- (1, '', MD5('12345'), 'testuser');
 
 CREATE TABLE IF NOT EXISTS `competition_bets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
