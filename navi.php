@@ -46,12 +46,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		static public function getMenu()
 		{
 			$db = Database::getInstance();
-			$openBonusBets = $db->hasOpenBonusBetsForUser(intval($_SESSION['activeUserId'])) && $db->areBonusBetsAllowed();
+			$hasOpenBonusBets = $db->areBonusBetsAllowed() && $db->hasOpenBonusBetsForUser(intval($_SESSION['activeUserId']));
 			$out = "<div id=\"navi\"><nav><a href=\"#\" id=\"menu-icon\"></a><ul>";
 
 			foreach (self::$naviMap as $link => $title)
 			{
-				$extraClass = ($link == 'bonus' && $openBonusBets) ? " class=\"attention\"" : "";
+				$extraClass = ($link == 'bonus' && $hasOpenBonusBets) ? " class=\"attention\"" : "";
 				$out .= "<li id=\"elem\" $extraClass><a href=\"$link\"><span id=\"elem\">$title</span></a></li>";
 			}
 

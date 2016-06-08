@@ -48,7 +48,7 @@ $errors = array(
 	$error = isset($_GET['error']) ? $_GET['error'] : FALSE;
 	$errorText = "";
 	if ($error && array_key_exists($error, $errors)) {
-		$errorText = "<div class=\"error\">" . $errors[$error] . "</div>";
+		$errorText = "<div class=\"message error\">" . $errors[$error] . "</div>";
 	}
 
 	if (isset($_GET['register']) && $_GET['register'] == $regToken) {

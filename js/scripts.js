@@ -127,21 +127,23 @@ $(document).ready(function(){
 
 	var loadingImage = $('<img />').attr('src', '../img/ajax-loader.gif').appendTo('body').hide();
 
-	// scroll to next starting match
-	var pane = null;
-	var offset = 0;
-	if (navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/)) {
-		pane = $('body');
-		offset = 230;
-	}
-	else {
-		pane = $('html');
-		offset = 90;
-	}
+	// scroll to next starting match unless there are open bets
+	console.log(hasOpenBonusBets);
+	if (!hasOpenBonusBets) {
+		var pane = null;
+		var offset = 0;
+		if (navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/)) {
+			pane = $('body');
+			offset = 230;
+		}
+		else {
+			pane = $('html');
+			offset = 90;
+		}
 
-	var top = $('div#match.match_open:first').offset().top - pane.offset().top - offset;
-	pane.scrollTo(top);
-	
+		var top = $('div#match.match_open:first').offset().top - pane.offset().top - offset;
+		pane.scrollTo(top);
+	}
 
 	$("div#match.match_open").on("click", function() {
 		var bc = $('body').find('#betcontrols');
