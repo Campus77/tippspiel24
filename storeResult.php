@@ -20,6 +20,14 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<script>
 		$(document).ready(function(){
 
+			$('table.admin tr').each(function(){
+				$(this).click(function() {
+					var ch = $(this).children();
+					var id = ch.eq(0).prop('value');
+					//console.log(id);
+				});
+			});
+		
 			$('#myform').submit(function() {
 				$('#myform input').filter(function(){
 					return $(this).prop('name').match(/^matchid_\d+/);
@@ -40,6 +48,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		});
 	</script>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link href="css/flags.css" rel="stylesheet" type="text/css" />
+	<link href="css/competition.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <?php
@@ -92,14 +102,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 
 	$matches = $db->getAllMatches();
-	$keys = array_keys($matches[0]);
+	$keys = array('id', 'kickoff', 'location', 'team1', 'result1', 'result2', 'team2');
 
 	echo "<form id=\"myform\" action=\"storeResult.php\" method=\"post\">";
-	echo "<input type=\"hidden\" name=\"action\" value=\"updateresults\"><table><tr>";
-	foreach ($keys as $it) {
-		echo "<td>$it</td>";
-	}
-	echo "</tr>";
+	echo "<input type=\"hidden\" name=\"action\" value=\"updateresults\"><table class='admin'>";
 
 	$c = 1;
 	foreach ($matches as $row)
@@ -109,6 +115,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		foreach ($keys as $it) {
 			if ($it == 'result1' || $it == 'result2') {
 				echo "<td><input style=\"width:25px;\" type=\"text\" name=\"".($it == "result1" ? "r1" : "r2")."_$c\" value=\"{$row[$it]}\" data-default=\"{$row[$it]}\"/></td>";
+			}
+			else if ($it == 'team1') {
+				echo "<td><div class=\"flag flag-{$row['flag1']}\"></div><span class=\"team\">{$row[$it]}</span></td>";
+			}
+			else if ($it == 'team2') {
+				echo "<td></div><span class=\"team\">{$row[$it]}</span><div class=\"flag flag-{$row['flag2']}\"></td>";
 			}
 			else {
 				echo "<td>{$row[$it]}</td>";

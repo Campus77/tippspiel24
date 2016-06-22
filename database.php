@@ -225,7 +225,8 @@ class Database {
 	public function getAllMatches()
 	{
 		$sql = "SELECT m.id, m.kickoff AS kickoff, l.name AS location,
-				t1.fullname AS team1, t2.fullname AS team2,
+				t1.shortname AS team1, t1.flag AS flag1,
+				t2.shortname AS team2, t2.flag AS flag2,
 				m.result1, m.result2
 				FROM competition_matches m
 				JOIN competition_locations l

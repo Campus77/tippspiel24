@@ -719,3 +719,15 @@ div.warning {
 div.warning a {
 	color: #f09c0c;
 }
+
+span.team {
+	display: inline-block;
+	text-align: center;
+	width: 45px;
+}
+
+table.admin {
+	color: lightgrey;
+	border-collapse: initial !important;
+	border-spacing: 2px;
+}
