@@ -91,10 +91,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		$points = (is_null($bet['bet1']) || is_null($bet['bet2']) || is_null($match['result1']) || is_null($match['result2']) ?
 					'--' : CalcScoreForMatch($bet['bet1'], $bet['bet2'], $match['result1'], $match['result2']));
 
+		$self = ($bet['id'] == $_SESSION['activeUserId']) ? " self" : "";
 		$colors = Array( 4 => 'gold', 3 => 'silver', 2 => 'bronze');
 		$color = (array_key_exists($points, $colors) ? $colors[$points] : 'standard');
 
-		echo "<tr class=\"ranking_$color\"><td>{$bet['username']}</td><td>$bet1:$bet2</td><td>$points</td></tr>";
+		echo "<tr class=\"ranking_$color$self\"><td>{$bet['username']}</td><td>$bet1:$bet2</td><td>$points</td></tr>\n";
 	}
 			
 	echo "</tbody>

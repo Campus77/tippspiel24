@@ -65,18 +65,29 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	</thead>
 	<tbody>
 <?php
+	$sameRankCount = 0;
 	$pos = 0;
+
 	$lastScore = -1;
 	foreach ($ranking as $r)
 	{
-		if ($r['score'] != $lastScore) $pos++;
+		$self = ($r['uid'] == $_SESSION['activeUserId']) ? " self" : "";
+		if ($r['score'] != $lastScore)
+		{
+			$pos = $sameRankCount + ++$pos;
+			$sameRankCount = 0;
+		}
+		else
+		{
+			$sameRankCount++;
+		}
 		$colors = Array('', 'gold', 'silver', 'bronze');
 		$color = ($pos <= 3) ? $colors[$pos] : 'standard';
-		echo "	<tr class=\"ranking_$color\">
+		echo "	<tr class=\"ranking_$color$self\">
 					<td>$pos</td>
 					<td>{$r['name']}</td>
 					<td>{$r['score']}</td>
-				</tr>";
+				</tr>\n";
 		
 		$lastScore = $r['score'];
 	}

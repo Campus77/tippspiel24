@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
-	include ('modules/check_session.php');
+	include_once ('modules/check_session.php');
 	include ('navi.php');
 ?>
 <!DOCTYPE html>

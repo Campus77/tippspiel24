@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
-	include ('modules/check_session.php');
+	include_once ('modules/check_session.php');
 	include ('navi.php');
 	require_once ('database.php');
 	include ('functions.php');
@@ -24,6 +24,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	$ts = $db->getServerTime();
 	$uid = $_SESSION['activeUserId'];
 	$bets = $db->getBetsForUser($uid);
+	$hasOpenBonusBets = $db->areBonusBetsAllowed() && $db->hasOpenBonusBetsForUser($uid);
 
 ?>
 <!DOCTYPE html>
@@ -31,6 +32,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta name="author" content="Marcel Daneyko" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href="css/flags.css" rel="stylesheet" type="text/css" />
@@ -54,6 +56,10 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 				var timediff = new Date('$ts') - new Date();
 			</script>";
 		
+		if ($hasOpenBonusBets) {
+			echo "<div class=\"message warning\"><strong>Achtung:</strong> <a href=\"/bonus\">Bonustipps</a> k&ouml;nnen nur vor Anpfiff des ersten Spiels abgegeben werden!</div>";
+		}
+		echo "<script>var hasOpenBonusBets = " . ($hasOpenBonusBets ? 'true' : 'false') . ";</script>";
 		foreach ($bets as $row)
 		{
 			$id = $row['id'];

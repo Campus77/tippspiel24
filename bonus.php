@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 */
-	include ('modules/check_session.php');
+	include_once ('modules/check_session.php');
 	include ('navi.php');
 	require_once ('database.php');
 	
@@ -32,6 +32,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link href="css/competition.css" rel="stylesheet prefetch" type="text/css" />
+		<link href="css/flags.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet prefetch" type="text/css" />
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<title><?php echo Navi::getTitle(); ?></title>

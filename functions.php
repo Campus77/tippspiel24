@@ -73,7 +73,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 				return CalcScoreForBonusTeam($bet, $result, $points, false);
 			case 'TEAM4':
 				return CalcScoreForBonusTeam($bet, $result, $points, false);
-			case 'TEAM8GROUP':
+			case 'TEAMGROUP':
 				return CalcScoreForBonusTeam($bet, $result, $points, true);
 			case 'INT':
 				$diff = abs($bet - $result);

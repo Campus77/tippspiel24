@@ -70,7 +70,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	}
 
 	
-	if (isset($_POST['action']) && $_POST['action'] == 'storeresults')
+	if (isset($_POST['action']) && $_POST['action'] == 'updateresults')
 	{
 		foreach ($_POST as $key => $value)
 		{
@@ -117,7 +117,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		echo "</tr>";
 		$c++;
 	}
-	echo "</table><input type=\"submit\" value=\"Speichern\"></form>";
+	echo "</table><input type=\"submit\" value=\"storeresults\"></form>";
 	
 	echo "<form action=\"storeResult.php\" method=\"post\">";
 	echo "<input type=\"hidden\" name=\"action\" value=\"addmatch\"><table><tr>";

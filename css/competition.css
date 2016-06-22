@@ -653,7 +653,11 @@ table.table {
 }
 
 #user_ranking tr:nth-child(even) {
-    background-color: #36383B;
+    background-color: #303235;
+}
+
+.self {
+    background-color: #504D3A !important;
 }
 
 #user_ranking tr.ranking_gold {

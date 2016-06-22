@@ -27,7 +27,7 @@
 						ret += '<span class="info">---</span>';
 					}
 					else {
-						ret += '<span class="info"><img class="flag" src="' + flags[subBets[i]] + '" title="' + subBets[i] + '"/></span>';
+						ret += '<span class="info"><div class="flag flag-' + flags[subBets[i]] + '" title="' + subBets[i] + '"/></span>';
 					}
 				}
 				return ret;
