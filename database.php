@@ -160,9 +160,9 @@ class Database {
 				FROM competition_matches m
 				JOIN competition_locations l
 				ON l.id = m.location_id
-				JOIN competition_teams t1
+				LEFT JOIN competition_teams t1
 				ON t1.id = m.team1_id
-				JOIN competition_teams t2
+				LEFT JOIN competition_teams t2
 				ON t2.id = m.team2_id
 				WHERE ";
 		

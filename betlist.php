@@ -36,11 +36,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	$location = $match['location'];
 	$result1 = FormatValue($match['result1'], 2, FALSE);
 	$result2 = FormatValue($match['result2'], 2, FALSE);
-	$tsn1    = $match['tsn1'];
-	$tfn1    = $match['tfn1'];
+	$tsn1    = FormatValue($match['tsn1'], 3, FALSE);
+	$tfn1    = FormatValue($match['tfn1'], 3, FALSE);
 	$tflg1   = $match['tflg1'];
-	$tsn2    = $match['tsn2'];
-	$tfn2    = $match['tfn2'];
+	$tsn2    = FormatValue($match['tsn2'], 3, FALSE);
+	$tfn2    = FormatValue($match['tfn2'], 3, FALSE);
 	$tflg2   = $match['tflg2'];
 	
 	for ($i = 0; $i < count($matchids); ++$i) {
