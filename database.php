@@ -63,6 +63,26 @@ class Database {
 		return FALSE;
 	}
 	
+	public function getUsernameForId($id)
+	{
+		$sql = "SELECT username FROM competition_users WHERE id = ?";
+		$res = $this->execute($sql, array($id));
+		$username = (count($res) == 1 ? $res[0]['username'] : '???');
+		return $username;
+	}
+	
+	public function getAllUsers()
+	{
+		$sql = "SELECT * FROM competition_users";
+		return $this->execute($sql);
+	}
+	
+	public function updatePassword($userId, $pwd)
+	{
+		$sql = "UPDATE competition_users SET password = ? WHERE id = ? LIMIT 1";
+		return $this->execute($sql, array(md5($pwd), $userId));
+	}
+	
     public function getServerTime()
     {
 		$res = $this->execute("SELECT DATE_FORMAT(NOW(), \"%Y-%m-%dT%H:%i:%s\") AS ts");
@@ -73,7 +93,7 @@ class Database {
 	{
 		$sql = "SELECT
 					m.id,
-					DATE_FORMAT(m.kickoff, '%d.%m.%Y %H:%i') AS kickoff,
+					m.kickoff,
 					(NOW() < m.kickoff) AS open,
 					m.result1,
 					m.result2,
@@ -88,6 +108,20 @@ class Database {
 					LEFT JOIN competition_bets b ON m.id = b.match_id AND b.user_id = $uid
 					ORDER BY m.kickoff, m.id ASC;";
 		return $this->execute($sql);
+	}
+	
+	public function getScoredGoals()
+	{
+		$sql = "SELECT sum(result1 + result2) as goals from competition_matches WHERE kickoff < date('2018-06-30 00:00:00')";
+		$count = $this->execute($sql);		
+		return $count[0]['goals'];
+	}
+	
+	public function updateScoredGoals()
+	{
+	   $goals = $this->getScoredGoals();
+	   $sql = "UPDATE competition_bonus SET result = $goals WHERE competition_bonus.id =6";
+	   $this->execute($sql);
 	}
 	
 	public function storeBet($userid, $matchid, $bet1, $bet2)
@@ -182,6 +216,43 @@ class Database {
 		}
 		return array();
 	}
+
+	public function getRecentMatchId()
+	{
+		$sql = "SELECT m.id FROM competition_matches m
+			WHERE NOW() > m.kickoff
+			ORDER BY TIMEDIFF(NOW(), m.kickoff) ASC, m.id ASC
+			LIMIT 1";
+		$res = $this->execute($sql);
+		if (count($res) == 1) {
+			return $res[0]['id'];
+		}
+		// no match played yet => get first match
+		$sql = "SELECT m.id FROM competition_matches m
+			ORDER BY m.kickoff ASC, m.id ASC LIMIT 0, 1";
+		$res = $this->execute($sql);
+		return $res[0]['id'];
+	}
+	
+	public function getNearestMatchDay()
+	{
+		$sql = "SELECT DATE(m.kickoff) as matchday
+			FROM competition_matches m
+			WHERE NOW() < m.kickoff
+			ORDER BY TIMEDIFF(m.kickoff, NOW()) ASC, m.id ASC
+			LIMIT 1";
+		$res = $this->execute($sql);
+		if (count($res) == 1) {
+			return $res[0]['matchday'];
+		}
+		// no more matches to be played => get last match
+		$sql = "SELECT DATE(m.kickoff) as matchday
+			FROM competition_matches m
+			ORDER BY m.kickoff DESC, m.id DESC
+			LIMIT 1";
+		$res = $this->execute($sql);
+		return $res[0]['matchday'];
+	}
 	
 	public function getAllMatchIds()
 	{
@@ -207,6 +278,18 @@ class Database {
 				AND u.id = b.user_id
 				ORDER BY LOWER(u.username) ASC";
 		return $this->execute($sql, array($matchid));
+	}
+	
+	public function getAllMatchDays()
+	{
+	    $sql = "SELECT DISTINCT(DATE(kickoff)) AS matchday FROM competition_matches ORDER BY kickoff ASC";
+	    $res = $this->execute($sql);
+	    $matchdays = array();
+	    foreach ($res as $row)
+	    {
+	        $matchdays[] = $row['matchday'];
+	    }
+	    return $matchdays;
 	}
 	
 	public function getAllTeams()
@@ -239,10 +322,33 @@ class Database {
 		return $this->execute($sql);
 	}
 
-	public function updateMatchResult($matchid, $result1, $result2)
+#   public function updateMatchResult($matchid, $result1, $result2)
+#   {
+#		$sql = "UPDATE competition_matches SET result1 = ?, result2 = ? WHERE id = ?";
+#		$this->execute($sql, array($result1, $result2, $matchid));
+#	}
+
+    public function updateMatchResult($matchid, $result1, $result2)
 	{
-		$sql = "UPDATE competition_matches SET result1 = ?, result2 = ? WHERE id = ?";
-		$this->execute($sql, array($result1, $result2, $matchid));
+        $sqlTest = "SELECT * FROM competition_matches WHERE id = ?";
+        $testResult = $this->execute($sqlTest, array($matchid));
+        foreach ($testResult as $row)
+        {
+            $r1 = $row['result1'];
+            $r2 = $row['result2'];
+        }
+
+        if (($r1 != $result1) || ($r2 != $result2))
+        {
+            $sql = "UPDATE competition_matches SET result1 = ?, result2 = ? WHERE id = ?";
+            $this->execute($sql, array($result1, $result2, $matchid));
+            return true;
+        }
+        else
+        {
+            #echo("Nothing to do");
+            return false;
+        }
 	}
 
 	public function addMatch($kickoff, $team1_id, $team2_id, $location_id)
@@ -334,10 +440,10 @@ class Database {
 		return $exists;
 	}
 
-	public function registerUser($username, $password, $email)
+	public function registerUser($username, $password)
 	{
-		$sql = "INSERT INTO competition_users (username, password, email) VALUES (?, ?, ?)";
-		$res = $this->execute($sql, array($username, $password, $email));
+		$sql = "INSERT INTO competition_users (username, password) VALUES (?, ?)";
+		$res = $this->execute($sql, array($username, $password));
 		$sql = "SELECT id FROM competition_users WHERE username = ?";
 		$res = $this->execute($sql, array($username));
 		$id = (count($res) == 1 ? $res[0]['id'] : FALSE);

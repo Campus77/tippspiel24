@@ -35,7 +35,13 @@ $errors = array(
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<link href="css/competition.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
-		<title>EM 2016</title>
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('input[name="username"]').focus();
+			});
+		</script>
+		<title>WM 2018</title>
 	</head>
 
 	<body id="login_body">
@@ -59,7 +65,6 @@ $errors = array(
 			<form action="modules/user_register.php" method="post">
 				<input type="hidden" name="regtoken" value="{$_GET['register']}" />
 				<input type="text" name="username" placeholder="Benutzername" required />
-				<input type="email" name="email" placeholder="E-Mail" optional />
 				<input type="password" name="password" placeholder="Passwort" required />
 				<input type="password" name="password2" placeholder="Nochmal Passwort" required />
 				<div style="width: 100%; height:40px"><input type="submit" value="registrieren" /></div>
@@ -67,12 +72,24 @@ $errors = array(
 		</div>		
 EOT;
 	}
+	else if (isset($_GET['resetpw'])) {
+		echo "<div class=\"wm-form\">
+				<h1>Passwort zurücksetzen</h1>
+				$errorText
+				<form action=\"modules/user_resetpw.php\" method=\"post\">
+					<input type=\"hidden\" name=\"resetpw\" value=\"{$_GET['resetpw']}\"/>
+					<input type=\"password\" name=\"password\" placeholder=\"Neues Passwort\" required />
+					<input type=\"password\" name=\"password2\" placeholder=\"Nochmal neues Passwort\" required />
+					<div style=\"width: 100%; height:40px\"><input type=\"submit\" value=\"zurücksetzen\" /></div>
+				</form>
+			</div>";
+	}
 	else {
 		echo <<< EOT
 		<div class="wm-form">
 			<h1>Login</h1>
 			<form action="modules/user_login.php" method="post">
-				<input type="text" name="username" placeholder="Benutzer" required />
+				<input type="text" name="username" placeholder="Benutzername" required />
 				<input type="password" name="password" placeholder="Passwort" required />
 				<div style="width: 100%; height:40px"><input type="submit" value="anmelden" /></div>
 			</form>

@@ -19,14 +19,15 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	
 	class Navi
 	{
-		const PAGENAME = "EM 2016";
+		const PAGENAME = "WM 2018";
 
 		static private $naviMap = Array(
 				"tipps"		=>	"Tippabgabe",
 				"ranking"	=>	"Bestenliste",
 				"results"	=>	"Ergebnisse",
 				"bonus"		=>	"Bonus",
-				"logout"		=>	"Logout"
+				"rules"		=>	"Regeln",
+				"logout"	=>	"Logout"
 			);
 		
 		static private function getPageTitle()
@@ -47,7 +48,9 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		{
 			$db = Database::getInstance();
 			$hasOpenBonusBets = $db->areBonusBetsAllowed() && $db->hasOpenBonusBetsForUser(intval($_SESSION['activeUserId']));
-			$out = "<div id=\"navi\"><nav><a href=\"#\" id=\"menu-icon\"></a><ul>";
+			$goals = $db->getScoredGoals();
+			$out = "<div class=\"ribbon-wrapper-red\"><div class=\"ribbon-red\">#Tore:$goals</div></div>";
+			$out .= "<div id=\"navi\"><nav><a href=\"#\" id=\"menu-icon\"></a><ul>";
 
 			foreach (self::$naviMap as $link => $title)
 			{
@@ -56,7 +59,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			}
 
 			$out .= "</ul></nav></div><div id=\"title\">
-					<h1>".ucfirst($_SESSION["activeUser"])."'s EM 2016</h1>
+					<h1>".self::PAGENAME." &#9733; ".ucfirst($_SESSION["activeUser"])."</h1>
 					<h2>".self::getPageTitle()."</h2>
 				</div>
 				<div style=\"clear:both\"></div>";

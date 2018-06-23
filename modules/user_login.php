@@ -30,8 +30,8 @@ if (isset($_POST['username']) and isset($_POST['password']))
 	{
 	   session_start();
 		
-	   $_SESSION['activeUser'] = $user;
 	   $_SESSION['activeUserId'] = $id;
+	   $_SESSION['activeUser'] = $db->getUsernameForId($id);
 		
 	   header('Location: /ranking', true, 301);
 	   exit;

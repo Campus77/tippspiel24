@@ -33,14 +33,13 @@ if (md5($_POST["password"]) != md5($_POST["password2"]))
 
 $username = $_POST["username"];
 $password = md5($_POST["password"]);
-$email = $_POST["email"];
 
 // check if user exists
 if ($db->usernameExists($username)) {
 	handleError('reg_user_exists');
 }
 
-$id = $db->registerUser($username, $password, $email);
+$id = $db->registerUser($username, $password);
 
 if ($id === FALSE) {
 	handleError('reg_db_error');

@@ -10,7 +10,7 @@ function showCombo($bid, $subid, $teams, $selected, $inGroup) {
 		$q .= "<label for=\"$name\">$groupLetter&nbsp;</label>";
 	}
 
-	$q .= "<select name=\"$name\">";
+	$q .= "<select name=\"$name\" autocomplete=\"country\">";
 	$q .= "<option value=\"---\">---</option>";
 	$selected = is_null($selected) ? "---" : $selected;
 	foreach ($teams as $t) {
@@ -69,7 +69,7 @@ foreach ($bonusbets as $row)
 			echo showCombos($id, $numGroups, $teams, $row['bonus_bet'], true);
 			break;
 		case 'INT':
-			echo "<input type=\"text\" name=\"b".$id."_1\" value=\"".$row['bonus_bet']."\">";
+			echo "<input type=\"text\" autocomplete=\"country\" name=\"b".$id."_1\" value=\"".$row['bonus_bet']."\">";
 			echo "<br/>";
 			break;
 		default:
@@ -78,7 +78,7 @@ foreach ($bonusbets as $row)
 	echo "</div><br/><br/>";
 }
 if ($showSubmit) {
-	echo "<div style=\"width: 100%; height:40px\"><input type=\"submit\" value=\"Speichern\"></div>";
+	echo "<div style=\"width: 100%; height:40px\"><input type=\"submit\" value=\"speichern\"></div>";
 }
 echo "</form></div>";
 

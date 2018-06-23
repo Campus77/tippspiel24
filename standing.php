@@ -21,7 +21,15 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	
 	$db = Database::getInstance();
 
+	function transcodeString($a) {
+		return iconv("UTF-8", "ASCII//TRANSLIT", strtolower($a));
+	}
+
 	function sortByScore($a, $b) {
+		if ($a['score'] == $b['score']) {
+			// sort by name
+			return transcodeString($a['name']) > transcodeString($b['name']);
+		}
 		return $a['score'] < $b['score'];
 	}
 	
@@ -33,7 +41,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		$ranking[$user['uid']] = Array(
 			'uid' => $user['uid'],
 			'name' => $user['name'],
-			'score' => 0);
+			'score' => 0,
+			'bonus' => 0);
 	}
 
 	// 2. get all bets with existing results
@@ -50,6 +59,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		$bonusScore = CalcScoreForBonus($bonus['bonus_bet'], $bonus['result'], $bonus['type'], $bonus['points']);
 //		echo "<script> console.log('". $bonus['name'] . ": $bonusScore " . array_sum(explode(';', $bonusScore))."');</script>";
 		$ranking[$bonus['uid']]['score'] += array_sum(explode(';', $bonusScore));
+		$ranking[$bonus['uid']]['bonus'] += array_sum(explode(';', $bonusScore));
 	}
 
 	usort($ranking, "sortByScore");
@@ -86,9 +96,9 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		echo "	<tr class=\"ranking_$color$self\">
 					<td>$pos</td>
 					<td>{$r['name']}</td>
-					<td>{$r['score']}</td>
+					<td>{$r['score']}<span class=\"tiny-bonus\">({$r['bonus']})</span></td>
 				</tr>\n";
-		
+
 		$lastScore = $r['score'];
 	}
 ?>

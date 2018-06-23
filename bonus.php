@@ -21,7 +21,19 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	
 	$db = Database::getInstance();
 	
-	$script = $db->areBonusBetsAllowed() ? 'bonusbet.php' : 'bonuslist.php';
+	if ($db->areBonusBetsAllowed()) {
+		$php_script = 'bonusbet.php';
+		$js_script = "";
+	}
+	else {
+		$php_script = 'bonuslist.php';
+		$listscripts = array("hammer.min", "jquery.hammer", "bonuslist", "swipe");
+		$js_script = "";
+		foreach ($listscripts as $s) {
+			$js_script .= "<script src=\"js/$s.js\"></script>\n";
+		}
+		$js_script .= "<script>var initPos = 0;</script>";
+	}
 	
 ?>
 <!DOCTYPE html>
@@ -34,7 +46,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<link href="css/competition.css" rel="stylesheet prefetch" type="text/css" />
 		<link href="css/flags.css" rel="stylesheet" type="text/css" />
 		<link href='fonts/roboto.css' rel="stylesheet prefetch" type="text/css" />
-		<script src="js/jquery-1.10.2.min.js"></script>
+		<script src="js/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<?php echo $js_script; ?>
 		<title><?php echo Navi::getTitle(); ?></title>
 	</head>
 	<body>
@@ -44,7 +57,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 			?>
 		</header>
 		<section id="content" class="center">
-			<?php include ($script); ?>
+			<?php include ($php_script); ?>
 		</section>
 	</body>
 </html>

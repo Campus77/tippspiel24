@@ -18,7 +18,7 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 	<img id="menu-icon"></img>
 </div>
 <div id="title">
-<h1>Tippspiel zur EM 2016</h1>
+<h1>Tippspiel zur WM 2018</h1>
 </div>
 <div style="clear:both"></div>
 

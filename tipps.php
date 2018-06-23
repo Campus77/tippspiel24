@@ -38,8 +38,11 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		<link href="css/flags.css" rel="stylesheet" type="text/css" />
 		<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css' />
 		<link href='fonts/roboto.css' rel="stylesheet" type="text/css" />
-		<script src="js/jquery-1.10.2.min.js"></script>
-		<script src="js/scripts.js"></script>
+		<script src="js/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="js/hammer.min.js"></script>
+		<script src="js/jquery.hammer.js"></script>
+		<script src="js/bets.js"></script>
+		<script src="js/swipe.js"></script>
 		<title><?php echo Navi::getTitle(); ?></title>
 	</head>
 	<body>
@@ -59,11 +62,32 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 		if ($hasOpenBonusBets) {
 			echo "<div class=\"message warning\"><strong>Achtung:</strong> <a href=\"/bonus\">Bonustipps</a> k&ouml;nnen nur vor Anpfiff des ersten Spiels abgegeben werden!</div>";
 		}
-		echo "<script>var hasOpenBonusBets = " . ($hasOpenBonusBets ? 'true' : 'false') . ";</script>";
+		echo "<script> var hasOpenBonusBets = " . ($hasOpenBonusBets ? 'true' : 'false') . "; </script>";
+		
+		$matchDayOutput = "";
+		$allMatchDays = $db->getAllMatchDays();
+		foreach ($allMatchDays as $matchDay)
+		{
+		    $day = new DateTime($matchDay);
+		    $matchDayOutput .= "<div class=\"scrollitem\"><div class=\"matchday\">".$day->format("d.m.Y")."</div></div>";
+		}
+		$initialMatchDay = $db->getNearestMatchDay();
+		$initialMatchPos = array_search($initialMatchDay, $allMatchDays);
+		echo "<script> var initPos = $initialMatchPos; </script>";
+		
+		echo "<div class=\"result\" id=\"outercontainer\">
+        	    <div class=\"arrow arrow_left\"></div>
+        	    <div class=\"arrow arrow_right\"></div>
+                <div id=\"innercontainer\">
+                    $matchDayOutput
+                </div>
+              </div><br/>";
 		foreach ($bets as $row)
 		{
 			$id = $row['id'];
-			$kickoff = $row['kickoff'];
+			$kickoffDate = new DateTime($row['kickoff']);
+			$kickoff = $kickoffDate->format('d.m.Y H:i');
+			$matchDay = $kickoffDate->format('d.m.Y');
 			$location = $row['location'];
 
 			$bet1  = FormatValue($row['bet1'], 2, false);
@@ -79,11 +103,12 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 
 			$matchClass = ($row['open'] ? 'match_open' : 'match_closed');
 
-			echo "<div class=\"match $matchClass\" id=\"match\" value=\"$id\">
+			echo "<div class=\"match $matchClass\" id=\"match\" value=\"$id\" data-matchday=\"$matchDay\" style=\"display:none;\">
 				  <div class=\"centercont\">
 					 <div class=\"goal\" value=\"$bet1\">$bet1</div>
 					 <div class=\"flag flag-$tflg1\"></div>
 					 <div class=\"desc\">$tsn1</div>
+					 <div class=\"vs\">:</div>
 					 <div class=\"desc\">$tsn2</div>
 					 <div class=\"flag flag-$tflg2\"></div>
 					 <div class=\"goal\" value=\"$bet2\">$bet2</div>
@@ -94,9 +119,8 @@ along with tippspiel24.  If not, see <http://www.gnu.org/licenses/>.
 						<h2>$location</h2>
 						<br/>
 						<h2 id=\"timetobet\">&nbsp;</h2>
-						<br/>
 				  </div>
-				   </div><br />";
+			</div>";
 		}
 
 		?>
